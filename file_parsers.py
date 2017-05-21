@@ -13,7 +13,7 @@ def load_nodes(nodes_file):
     with open(nodes_file, 'r') as f:
         file_content = f.read()
     # split the content in lines and each line in tab separated columns
-    file_content = map(lambda x: x.split('\t'), file_content.split('\n'))
+    file_content = [x.split('\t') for x in file_content.split('\n')]
     # check if the format is right
     nodes_header = file_content.pop(0)
     nodes = []
@@ -28,7 +28,7 @@ def load_nodes(nodes_file):
                 'strength': float(node_line[5]),
             }
             # add the rest of the content
-            for i in xrange(6, len(nodes_header)):
+            for i in range(6, len(nodes_header)):
                 a_node[nodes_header[i]] = node_line[i]
             nodes.append(a_node)
     return nodes
@@ -46,10 +46,10 @@ def load_edges(edges_file):
     with open(edges_file, 'r') as f:
         file_content = f.read()
     # split the content in lines and each line in tab separated columns
-    file_content = map(lambda x: x.split('\t'), file_content.split('\n'))
+    file_content = [x.split('\t') for x in file_content.split('\n')]
     # check if the format is right
     edge_header = file_content.pop(0)
-    for i in xrange(len(file_content)):
+    for i in range(len(file_content)):
         edge_line = file_content[i]
         if len(edge_line) > 1:
             an_edge = {
@@ -62,7 +62,7 @@ def load_edges(edges_file):
                 'flux': None,
                 }
             an_edge.update(
-                **{edge_header[j]: edge_line[j] for j in xrange(6, len(edge_header))}
+                **{edge_header[j]: edge_line[j] for j in range(6, len(edge_header))}
             )
             edges.append(an_edge)
     return edges
@@ -138,6 +138,6 @@ def load_solution(solution_file):
             elif which == 3:  # uncovered demands in normal scenario
                 before_config[0][int(line[0])] = (float(line[1]), float(line[2]))
             elif which == 4:  # uncovered demand after attack
-                print line
+                print(line)
                 after_config[0][int(line[0])] = (float(line[1]), float(line[2]))
     return before_config, after_config
